@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; display: flex; align-items: center; }
+        .result-card { background: rgba(255, 255, 255, 0.95); border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); padding: 2rem; text-align: center; }
+        .result-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .status-badge { display: inline-block; padding: 0.5rem 1.5rem; border-radius: 25px; font-weight: 500; margin: 1rem 0; }
+        .warning { background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; }
+        .success { background: linear-gradient(45deg, #00b09b, #96c93d); color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="result-card">
+                    {% if prediction == 1 %}
+                        <i class="fas fa-exclamation-circle result-icon red-text"></i>
+                        <h2 class="red-text">Cirrhosis Detected</h2>
+                        <div class="status-badge warning">Medical Review Required</div>
+                        <p>Please consult a healthcare professional for further evaluation.</p>
+                    {% elif prediction == 2 %}
+                        <i class="fas fa-check-circle result-icon green-text"></i>
+                        <h2 class="green-text">No Cirrhosis</h2>
+                        <div class="status-badge success">Healthy Liver</div>
+                        <p>Your liver health appears to be in good condition.</p>
+                    {% else %}
+                        <i class="fas fa-question-circle result-icon"></i>
+                        <h2>Unknown Prediction</h2>
+                        <p>Unexpected result. Please try again.</p>
+                    {% endif %}
+                    <a href="{{ url_for('Home') }}" class="btn waves-effect waves-light" style="margin-top: 1rem;">New Assessment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

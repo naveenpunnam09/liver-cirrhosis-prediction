@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liver Disease Prediction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+        }
+        .prediction-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+        .page-title, .input-group-title {
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .input-group-title {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        .input-field input:focus, .select-wrapper input:focus {
+            border-bottom: 2px solid #7e57c2 !important;
+            box-shadow: 0 1px 0 0 #7e57c2 !important;
+        }
+        .btn-predict {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 27px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.3s ease;
+        }
+        .btn-predict:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2);
+        }
+        .icon-container {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .icon-container i {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-heartbeat"></i> Liver Cirrhosis Predictor</h1>
+        
+        <div class="row">
+            <div class="col s12 m10 offset-m1">
+                <div class="prediction-card">
+                    <div class="icon-container"><i class="fas fa-stethoscope"></i></div>
+                    
+                    <form action="{{ url_for('predict') }}" method="POST">
+                        <div class="input-group-title"><i class="fas fa-user-circle"></i> Personal Information</div>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <input id="age" name="Age" type="number" required>
+                                <label for="age">Age (years)</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <select name="Gender" required>
+                                    <option value="" disabled selected>Select Gender</option>
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                                <label>Gender</label>
+                            </div>
+                        </div>
+
+                        <div class="input-group-title"><i class="fas fa-flask"></i> Blood Test Results</div>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <input id="bilirubin" name="Total_Bilirubin" type="number" step="0.01" required>
+                                <label for="bilirubin">Total Bilirubin</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <input id="alkaline" name="Alkaline_Phosphotase" type="number" required>
+                                <label for="alkaline">Alkaline Phosphatase</label>
+                            </div>
+                        </div>
+
+                        <div class="input-group-title"><i class="fas fa-vial"></i> Enzyme Levels</div>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <input id="alamine" name="Alamine_Aminotransferase" type="number" required>
+                                <label for="alamine">Alamine Aminotransferase</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <input id="aspartate" name="Aspartate_Aminotransferase" type="number" required>
+                                <label for="aspartate">Aspartate Aminotransferase</label>
+                            </div>
+                        </div>
+
+                        <div class="input-group-title"><i class="fas fa-prescription-bottle"></i> Protein Analysis</div>
+                        <div class="row">
+                            <div class="input-field col s12 m4">
+                                <input id="proteins" name="Total_Protiens" type="number" step="0.01" required>
+                                <label for="proteins">Total Proteins</label>
+                            </div>
+                            <div class="input-field col s12 m4">
+                                <input id="albumin" name="Albumin" type="number" step="0.01" required>
+                                <label for="albumin">Albumin</label>
+                            </div>
+                            <div class="input-field col s12 m4">
+                                <input id="ratio" name="Albumin_and_Globulin_Ratio" type="number" step="0.01" required>
+                                <label for="ratio">Albumin/Globulin Ratio</label>
+                            </div>
+                        </div>
+
+                        <div class="row center-align" style="margin-top: 2rem;">
+                            <button class="btn-large waves-effect waves-light btn-predict" type="submit">
+                                Analyze <i class="fas fa-microscope right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.FormSelect.init(document.querySelectorAll('select'));
+            M.updateTextFields();
+        });
+    </script>
+</body>
+</html>
